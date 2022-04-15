@@ -1,0 +1,31 @@
+{% extends 'Home/base.html' %}
+{% block title %}
+    Editar tipo de cambio
+{% endblock title %}
+
+{% block content %}
+    <form style="width: 50%; margin:auto" method="POST" id="form-exchange">
+        <br>
+        {% csrf_token %}
+        <br><br>
+        <h4 style="text-align:center">¿Desea eliminar este registro?</h4>
+        <div class="form-group">
+            <label class="form-label" for="id_username">Fecha</label>
+            <input type="date" disabled class="form-control" value="{{exchange_rate.date|date:'Y-m-d'}}" >
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Precio venta</label>
+            <input disabled type="text" class="form-control" name="" value="{{exchange_rate.sale_price}}" id="">
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Precio compra</label>
+            <input disabled type="text" class="form-control" value="{{exchange_rate.purchase_price}}" id="">
+        </div>
+        <br>
+        <div class="d-grid gap-1">
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+        </div>
+    </form>
+{% endblock content %}

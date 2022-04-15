@@ -1,0 +1,91 @@
+{% extends 'Home/base.html' %}
+{% block title %}
+    Agregar nuevo tipo de cambio
+{% endblock title %}
+
+{% block content %}
+    <form style="width: 50%; margin:auto" method="POST" id="form-exchange">
+        <br>
+        <div id="content-msj">
+                
+        </div>
+        {% csrf_token %}
+        <br><br>
+        <h4 style="text-align:center">Registrar nuevo tipo de cambio</h4>
+        <div class="form-group">
+            <label class="form-label" for="id_username">Buscar fecha</label>
+            <input type="date" required name="init" id="init" onchange="handler(event)" class="form-control" >
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Venta</label>
+            <input disabled type="text" name="sale" class="form-control" id="sale">
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Compra</label>
+            <input disabled type="text" name="buy" class="form-control" id="buy">
+        </div>
+        <br>
+        <div class="d-grid gap-1">
+            <button class="btn btn-primary" type="submit">Agregar</button>
+            </div>
+    </form>
+{% endblock content %}
+
+{% block js %}
+    <script>
+    function handler(e){
+        const url = `{% url 'app_home:home-get-exchange'%}`;
+        const data = {
+            "date":e.target.value
+        }
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: data,
+            success: function(response) {
+                document.getElementById("sale").value=response['venta']
+                document.getElementById("buy").value=response['compra']
+            },
+            error: function(response) {
+                document.getElementById("content-msj").innerHTML=`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error al obtener intercambio, intente de nuevo</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `
+            }
+        })
+    }
+    $("#form-exchange").submit(function(e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'app_home:home-add' %}",
+            data: serializedData,
+            success: function(response) {
+                document.getElementById("content-msj").innerHTML=`
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>${response['msj']}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `
+            },
+            error: function(response) {
+                document.getElementById("content-msj").innerHTML=`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>${response.responseJSON['msj']}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `
+            }
+        })
+    })
+    </script>
+
+{% endblock js %}
+    

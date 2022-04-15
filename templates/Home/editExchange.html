@@ -1,0 +1,36 @@
+{% extends 'Home/base.html' %}
+{% block title %}
+    Editar tipo de cambio
+{% endblock title %}
+
+{% block content %}
+    <form style="width: 50%; margin:auto" method="POST" id="form-exchange">
+        <br>
+        <div id="content-msj">
+                
+        </div>
+        {% csrf_token %}
+        <br><br>
+        <h4 style="text-align:center">Editar tipo de cambio</h4>
+        <div class="form-group">
+            <label class="form-label" for="id_username">Buscar fecha</label>
+            <input type="date" disabled class="form-control" value="{{object.date|date:'Y-m-d'}}" >
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Venta</label>
+            {{ form.sale_price }}
+            {{form.sale_price.errors}}
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="form-label" for="id_password">Compra</label>
+            {{ form.purchase_price }}
+            {{form.purchase_price.errors}}
+        </div>
+        <br>
+        <div class="d-grid gap-1">
+            <button class="btn btn-primary" type="submit">Actualizar</button>
+            </div>
+    </form>
+{% endblock content %}
